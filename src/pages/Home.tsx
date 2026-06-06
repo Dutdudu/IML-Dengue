@@ -14,9 +14,15 @@ function Home() {
         </p>
 
         <div style={{ marginTop: 20 }}>
-          <Link to="/triagem" className="primary">
-            Ir para triagem
-          </Link>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
+            <Link to="/triagem" className="primary">
+              Ir para triagem
+            </Link>
+
+            <Link to="/graphics" className="secondary">
+              Análise dos Dados
+            </Link>
+          </div>
         </div>
       </section>
     </main>
