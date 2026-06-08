@@ -1,6 +1,70 @@
 from pathlib import Path
 import pandas as pd
 
+try:
+    from .sinan_mappings import add_sinan_cbo_labels, standardize_columns
+except ImportError:
+    from sinan_mappings import add_sinan_cbo_labels, standardize_columns
+
+
+FINAL_COLUMN_ORDER = [
+    # Paciente
+    "age",
+    "age_years",
+    "sex",
+    "sex_label",
+    "education_level",
+    "education_level_label",
+    "occupation_code",
+    "occupation_name",
+    # Residência
+    "residence_state",
+    "residence_state_label",
+    "residence_municipality",
+    "residence_health_region",
+    # Notificação
+    "disease_code",
+    "notification_year",
+    "notification_month",
+    "notification_day",
+    "notification_epi_week",
+    "notif_municipality",
+    "notif_health_region",
+    "health_facility",
+    # Início dos sintomas
+    "symptom_onset_date",
+    "symptom_epi_year",
+    "symptom_epi_week_number",
+    # Sintomas e sinais auto-relatáveis/registrados
+    "fever",
+    "myalgia",
+    "headache",
+    "rash",
+    "vomiting",
+    "nausea",
+    "back_pain",
+    "conjunctivitis",
+    "arthritis",
+    "joint_pain",
+    "petechiae",
+    "retro_orbital_pain",
+    "tourniquet_test",
+    # Atendimento, hospitalização e encerramento
+    "hospitalized",
+    "hospital_state",
+    "hospital_state_label",
+    # Alvo
+    "final_classification",
+    "final_classification_label",
+]
+
+
+def ordenar_colunas_finais(df):
+    colunas_ordenadas = [coluna for coluna in FINAL_COLUMN_ORDER if coluna in df.columns]
+    outras_colunas = [coluna for coluna in df.columns if coluna not in colunas_ordenadas]
+    return df[colunas_ordenadas + outras_colunas]
+
+
 class DengueDataCleaner:
     def __init__(self, arquivos=None):
         base = Path(__file__).resolve().parents[1]
@@ -30,7 +94,7 @@ class DengueDataCleaner:
             else:
                 dfs.append(pd.read_parquet(arquivo))
 
-        return pd.concat(dfs, ignore_index=True)
+        return standardize_columns(pd.concat(dfs, ignore_index=True))
 
     def remover_colunas_iguais(self, df):
         for coluna in list(df.columns):
@@ -42,56 +106,70 @@ class DengueDataCleaner:
 
     def limpar_angel(self):
         colunas = [
-            "ALRM_HEPAT", "COPAISINF", "GRAV_METRO", "COMUNINF", "AUTO_IMUNE",
-            "LACO", "PETEQUIAS", "LACO_N", "GRAV_HIPOT", "RENAL", "DOR_RETRO",
-            "CLINC_CHIK", "NDUPLIC_N", "CON_FHD", "EVIDENCIA", "ARTRALGIA",
-            "CEFALEIA", "GRAV_TAQUI", "ALRM_HEMAT", "SEM_PRI", "GRAV_HEMAT",
-            "CLASSI_FIN", "HEMATURA", "RESUL_VI_N", "EXANTEMA", "VOMITO",
-            "DT_NASC", "GRAV_PULSO", "CS_RACA", "ALRM_PLAQ", "DT_ALRM",
-            "GRAV_SANG", "PLASMATICO", "PETEQUIA_N", "CS_GESTANT", "GRAV_AST",
-            "GRAV_ENCH", "GRAV_MIOC", "GRAV_CONV",
+            "alarm_liver_enlarged", "infection_country", "severe_metrorrhagia",
+            "infection_municipality", "autoimmune_disease", "tourniquet_test",
+            "petechiae_hemorrh", "tourniquet_test_hemorrh", "severe_hypotension",
+            "kidney_disease", "retro_orbital_pain", "chik_clinical_form",
+            "duplicate_flag", "dengue_hemorrhagic_fever", "hemorrhagic_evidence",
+            "joint_pain", "headache", "severe_tachycardia",
+            "alarm_hematocrit_rise", "symptom_epi_week", "severe_hematemesis",
+            "final_classification", "hematuria", "viral_isolation_result", "rash",
+            "vomiting", "birth_date", "severe_weak_pulse", "race",
+            "alarm_low_platelets", "alarm_signs_date", "severe_bleeding",
+            "plasma_leakage", "petechiae", "pregnancy_status",
+            "severe_ast_elevated", "severe_cap_refill", "severe_myocarditis",
+            "severe_convulsions",
         ]
 
         df = self.df[colunas].copy()
 
         cols_leakage = [
-            "CRITERIO", "DT_ENCERRA", "ALRM_HIPOT", "ALRM_PLAQ", "ALRM_VOM",
-            "ALRM_SANG", "ALRM_HEMAT", "ALRM_ABDOM", "ALRM_LETAR", "ALRM_HEPAT",
-            "ALRM_LIQ", "DT_ALRM", "GRAV_PULSO", "GRAV_CONV", "GRAV_ENCH",
-            "GRAV_INSUF", "GRAV_TAQUI", "GRAV_EXTRE", "GRAV_HIPOT", "GRAV_HEMAT",
-            "GRAV_MELEN", "GRAV_METRO", "GRAV_SANG", "GRAV_AST", "GRAV_MIOC",
-            "GRAV_CONSC", "GRAV_ORGAO", "DT_GRAV", "COPAISINF", "COMUNINF",
+            "confirmation_criteria", "case_closure_date", "alarm_hypotension",
+            "alarm_low_platelets", "alarm_persistent_vomit", "alarm_bleeding",
+            "alarm_hematocrit_rise", "alarm_abdominal_pain", "alarm_lethargy",
+            "alarm_liver_enlarged", "alarm_fluid_accumul", "alarm_signs_date",
+            "severe_weak_pulse", "severe_convulsions", "severe_cap_refill",
+            "severe_resp_distress", "severe_tachycardia", "severe_cold_extremities",
+            "severe_hypotension", "severe_hematemesis", "severe_melena",
+            "severe_metrorrhagia", "severe_bleeding", "severe_ast_elevated",
+            "severe_myocarditis", "severe_altered_consc", "severe_organ_damage",
+            "severity_signs_date", "infection_country", "infection_municipality",
         ]
         df = df.drop(cols_leakage, axis=1, errors="ignore")
         df = self.remover_colunas_iguais(df)
 
-        df["DT_NASC"] = pd.to_datetime(df["DT_NASC"], errors="coerce")
-        df["NASC_YEAR"] = df["DT_NASC"].dt.year
-        df["AGE"] = 2020 - df["NASC_YEAR"]
-        df = df.drop(["DT_NASC", "NASC_YEAR"], axis=1, errors="ignore")
+        df["birth_date"] = pd.to_datetime(df["birth_date"], errors="coerce")
+        df["birth_year_derived"] = df["birth_date"].dt.year
+        df["age"] = 2020 - df["birth_year_derived"]
+        df = df.drop(["birth_date", "birth_year_derived"], axis=1, errors="ignore")
 
-        df = df.drop(["AUTO_IMUNE", "RENAL"], axis=1, errors="ignore")
-        df = df.drop(["CS_GESTANT", "CS_RACA", "CLINC_CHIK", "RESUL_VI_N"], axis=1, errors="ignore")
+        df = df.drop(["autoimmune_disease", "kidney_disease"], axis=1, errors="ignore")
+        df = df.drop(
+            ["pregnancy_status", "race", "chik_clinical_form", "viral_isolation_result"],
+            axis=1,
+            errors="ignore",
+        )
 
-        df["SEM_PRI_YEAR"] = df["SEM_PRI"] // 100
-        df["SEM_PRI_WEEK"] = df["SEM_PRI"] % 100
-        df = df.drop(columns=["SEM_PRI"])
+        df["symptom_epi_year"] = df["symptom_epi_week"] // 100
+        df["symptom_epi_week_number"] = df["symptom_epi_week"] % 100
+        df = df.drop(columns=["symptom_epi_week"])
 
-        df["CLASSI_FIN"] = df["CLASSI_FIN"].map({
+        df["final_classification"] = df["final_classification"].map({
             5: 0,
             10: 1,
             11: 1,
             12: 1,
         })
-        df = df[df["CLASSI_FIN"].notna()].copy()
+        df = df[df["final_classification"].notna()].copy()
 
         return df
 
     def limpar_pedro(self):
         colunas = [
-            "ID_RG_RESI", "DT_NOTIFIC", "ID_AGRAVO", "DT_ENCERRA", "FEBRE",
-            "NU_ANO", "CS_SEXO", "TPAUTOCTO", "HOSPITALIZ", "ID_UNIDADE",
-            "ID_OCUPA_N", "NAUSEA", "ID_REGIONA", "SG_UF", "NU_IDADE_N",
+            "residence_health_region", "notification_date", "disease_code",
+            "fever", "notification_year", "sex", "autochthonous_case",
+            "hospitalized", "health_facility", "occupation_code", "nausea",
+            "notif_health_region", "residence_state", "age",
         ]
 
         df = self.df[colunas].copy()
@@ -114,50 +192,51 @@ class DengueDataCleaner:
             except:
                 return None
 
-        df["IDADE_ANOS"] = df["NU_IDADE_N"].apply(parse_idade)
-        df = df.drop(columns=["NU_IDADE_N"])
+        df["age_years"] = df["age"].apply(parse_idade)
+        df = df.drop(columns=["age"])
 
-        df["DT_NOTIFIC"] = pd.to_datetime(df["DT_NOTIFIC"], format="%Y-%m-%d")
-        df["MES_NOTIFIC"] = df["DT_NOTIFIC"].dt.month
-        df["DIA_NOTIFIC"] = df["DT_NOTIFIC"].dt.day
-        df = df.drop(columns=["DT_NOTIFIC"])
+        df["notification_date"] = pd.to_datetime(df["notification_date"], format="%Y-%m-%d")
+        df["notification_month"] = df["notification_date"].dt.month
+        df["notification_day"] = df["notification_date"].dt.day
+        df = df.drop(columns=["notification_date"])
 
-        df["DT_ENCERRA"] = pd.to_datetime(df["DT_ENCERRA"], format="%Y-%m-%d")
-        df["MES_ENCERRA"] = df["DT_ENCERRA"].dt.month
-        df["DIA_ENCERRA"] = df["DT_ENCERRA"].dt.day
-        df = df.drop(columns=["DT_ENCERRA"])
-
-        df["ID_OCUPA_N"] = df["ID_OCUPA_N"].fillna("IGNORADO")
-        df = df.drop(columns=["TPAUTOCTO"])
+        df["occupation_code"] = df["occupation_code"].fillna(0)
+        df = df.drop(columns=["autochthonous_case"])
 
         return df
 
     def limpar_ruan(self):
         minhas_colunas = [
-            "DT_PCR", "UF", "DT_OBITO", "RESUL_PRNT", "MANI_HEMOR", "ARTRITE",
-            "HEMATOLOG", "RES_CHIKS1", "COUFINF", "RESUL_SORO", "MIALGIA",
-            "DT_PRNT", "GRAV_ORGAO", "DT_NS1", "DT_INVEST", "ALRM_ABDOM",
-            "SG_UF_NOT", "IMUNOH_N", "SOROTIPO", "GRAV_INSUF", "ACIDO_PEPT",
-            "CONJUNTVIT", "EPISTAXE", "FLXRECEBI", "DOR_COSTAS", "TP_NOT",
-            "ID_MUNICIP", "SEM_NOT", "DT_INTERNA", "HIPERTENSA", "HEPATOPAT",
-            "ID_MN_RESI", "ALRM_LIQ", "DT_SIN_PRI", "METRO", "TP_SISTEMA",
-            "HISTOPA_N", "CS_ESCOL_N", "GRAV_CONSC",
+            "pcr_date", "hospital_state", "death_date", "prnt_result",
+            "hemorrhagic_manifest", "arthritis", "blood_disorder",
+            "chik_test1_result", "infection_state", "serology_result", "myalgia",
+            "prnt_date", "severe_organ_damage", "ns1_test_date",
+            "investigation_date", "alarm_abdominal_pain", "notif_state",
+            "immunohistochemistry", "serotype", "severe_resp_distress",
+            "peptic_ulcer", "conjunctivitis", "nosebleed", "flow_received",
+            "back_pain", "notification_type", "notif_municipality",
+            "notification_epi_week", "hospitalization_date", "hypertension",
+            "liver_disease", "residence_municipality", "alarm_fluid_accumul",
+            "symptom_onset_date", "metrorrhagia", "system_type", "histopathology",
+            "education_level", "severe_altered_consc",
         ]
 
         df = self.df[minhas_colunas].copy()
 
         col = [
-            "SOROTIPO", "COUFINF", "DT_NS1", "DT_PCR", "DT_OBITO", "DT_PRNT",
-            "RESUL_PRNT", "RES_CHIKS1", "RESUL_SORO", "ALRM_ABDOM", "ALRM_LIQ",
-            "GRAV_ORGAO", "GRAV_CONSC", "GRAV_INSUF", "HISTOPA_N", "IMUNOH_N",
+            "serotype", "infection_state", "ns1_test_date", "pcr_date",
+            "death_date", "prnt_date", "prnt_result", "chik_test1_result",
+            "serology_result", "alarm_abdominal_pain", "alarm_fluid_accumul",
+            "severe_organ_damage", "severe_altered_consc", "severe_resp_distress",
+            "histopathology", "immunohistochemistry",
         ]
         df = df.drop(columns=col)
         df = self.remover_colunas_iguais(df)
 
-        col = ["HEMATOLOG", "HEPATOPAT", "HIPERTENSA", "ACIDO_PEPT"]
+        col = ["blood_disorder", "liver_disease", "hypertension", "peptic_ulcer"]
         df = df.drop(columns=col, errors="ignore")
 
-        col = ["DT_INVEST", "DT_INTERNA", "SG_UF_NOT", "TP_NOT"]
+        col = ["investigation_date", "hospitalization_date", "notif_state", "notification_type"]
         df = df.drop(columns=col)
 
         return df
@@ -165,7 +244,8 @@ class DengueDataCleaner:
     def juntar(self, df_angel, df_pedro, df_ruan):
         df = pd.concat([df_angel, df_pedro, df_ruan], axis=1, join="inner")
         df = df.loc[:, ~df.columns.duplicated()]
-        return df.reset_index(drop=True)
+        df = add_sinan_cbo_labels(df.reset_index(drop=True))
+        return ordenar_colunas_finais(df)
 
     def transformar(self):
         df_angel = self.limpar_angel()
