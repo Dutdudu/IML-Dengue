@@ -127,7 +127,8 @@ class DengueDataCleaner:
         df["DIA_ENCERRA"] = df["DT_ENCERRA"].dt.day
         df = df.drop(columns=["DT_ENCERRA"])
 
-        df = df.dropna(subset=["FEBRE", "ID_OCUPA_N", "TPAUTOCTO"])
+        df["ID_OCUPA_N"] = df["ID_OCUPA_N"].fillna("IGNORADO")
+        df = df.drop(columns=["TPAUTOCTO"])
 
         return df
 
