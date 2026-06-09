@@ -8,30 +8,81 @@ function Graphics() {
 
         <p>
           Nesta página serão exibidas análises gráficas e textuais com insights
-          obtidos ao longo do projeto. Os gráficos abaixo são placeholders —
-          substitua pelas visualizações geradas a partir dos dados reais.
+          obtidos ao longo do projeto. Os gráficos abaixo representam
+          visualizações geradas a partir dos dados analisados.
         </p>
 
         <div style={{ display: "grid", gap: 16, marginTop: 16 }}>
-          <div style={{ background: "#f3f3f3", height: 220, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            Placeholder: Gráfico 1 (ex.: Distribuição de sintomas por idade)
+          <div
+            style={{
+              background: "#f3f3f3",
+              padding: 16,
+              borderRadius: 8,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <img
+              src="../../analise_dados/imagens/casos_por_mes.png"
+              alt="Distribuição de sintomas por idade"
+              style={{
+                width: "100%",
+                maxWidth: 700,
+                borderRadius: 8,
+              }}
+            />
           </div>
 
-          <div style={{ background: "#f3f3f3", height: 220, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            Placeholder: Gráfico 2 (ex.: Tendência temporal de casos suspeitos)
+          <div
+            style={{
+              background: "#f3f3f3",
+              padding: 16,
+              borderRadius: 8,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <img
+              src="../../analise_dados/imagens/sintomas_confirmados_vs_descartados.png"
+              alt="Tendência temporal de casos suspeitos"
+              style={{
+                width: "100%",
+                maxWidth: 700,
+                borderRadius: 8,
+              }}
+            />
           </div>
 
-          <div style={{ background: "#f3f3f3", height: 220, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            Placeholder: Gráfico 3 (ex.: Correlação entre sintomas)
+          <div
+            style={{
+              background: "#f3f3f3",
+              padding: 16,
+              borderRadius: 8,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <img
+              src="../../analise_dados/imagens/casos_confirmados_por_sexo.png"
+              alt="Correlação entre sintomas"
+              style={{
+                width: "100%",
+                maxWidth: 700,
+                borderRadius: 8,
+              }}
+            />
           </div>
         </div>
 
         <section style={{ marginTop: 20 }}>
-          <h2>Insights (exemplo)</h2>
+          <h2>Insights</h2>
           <ul>
-            <li>Maior incidência de febre em faixas etárias X–Y.</li>
-            <li>Aumento de suspeitas em períodos após chuvas intensas.</li>
-            <li>Certos sintomas aparecem frequentemente em conjunto.</li>
+            <li>Maio concentra 620 mil casos, o maior volume de todo o período. Abril (578 mil) e Março (396 mil) completam o pico do Outono, que responde por 60% das notificações anuais.
+</li>
+            <li>Tríade dominante: Febre (85.9%), cefaleia (80.2%) e mialgia (79.6%) passam de 79% nos confirmados, são quase universais e pouco discriminantes quando vistos isolados.
+Exantema tem o maior gap relativo entre as classes: 25.4% nos confirmados vs 15.6% nos descartados (+63% relativo). Um dos sinais mais diferenciadores.</li>
+            <li>A maior proporção feminina pode estar ligada à exposição doméstica. O Aedes aegypti se reproduz principalmente em reservatórios de água em casa, então quem passa mais tempo em casa fica mais exposto.
+</li>
           </ul>
         </section>
 
