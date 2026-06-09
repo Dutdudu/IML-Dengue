@@ -6,7 +6,7 @@ import Graphics from "./pages/Graphics";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/dengue_sense_classifier">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/triagem" element={<Triage />} />
