@@ -135,28 +135,7 @@ h1 {
 }
 
 /* Alerta de dengue grave */
-.resultado-alerta {
-  border-left-color: #dc2626;
-  background: linear-gradient(135deg, #fef2f2, #fee2e2);
-  border: 1px solid #fecaca;
-}
 
-.resultado-alerta h2 {
-  color: #b91c1c;
-  font-weight: 800;
-}
-
-.resultado-alerta::before {
-  content: "Atenção";
-  display: inline-block;
-  background: #dc2626;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 12px;
-}
 
 /* Responsivo para celular */
 @media (max-width: 700px) {
@@ -189,28 +168,7 @@ h1 {
   border-bottom: 2px solid #ccfbf1;
 }
 
-.resultado-grave {
-  border-left-color: #7f1d1d;
-  background: linear-gradient(135deg, #fee2e2, #fecaca);
-  border: 1px solid #fca5a5;
-}
 
-.resultado-grave h2 {
-  color: #7f1d1d;
-  font-weight: 900;
-}
-
-.resultado-grave::before {
-  content: "Urgência";
-  display: inline-block;
-  background: #991b1b;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 12px;
-} 
 
 .patient-form {
   margin-top: 32px;

@@ -8,46 +8,61 @@ import { Link } from "react-router-dom";
 
 const grupos = [
   {
-    id: "clinico",
-    title: "Sinais clínicos",
+    id: "symptoms",
+    title: "Sintomas informados",
   },
   {
-    id: "comorbidade",
-    title: "Doenças pré-existentes",
-  },
-  {
-    id: "laboratorial",
-    title: "Dados laboratoriais",
-  },
-  {
-    id: "alarme",
-    title: "Sinais de alarme",
-  },
-  {
-    id: "grave",
-    title: "Sinais de dengue grave",
-  },
-  {
-    id: "hemorragico",
-    title: "Manifestações hemorrágicas",
+    id: "clinical",
+    title: "Achados clínicos",
   },
 ];
 
 function Triage() {
-  const [patientData, setPatientData] = useState<PatientData>({
-    idade: "",
-    sexo: "",
-    gestante: "",
-    racaCor: "",
-    escolaridade: "",
-    ufResidencia: "",
-    municipioResidencia: "",
-    ufNotificacao: "",
-    municipioNotificacao: "",
-    dataPrimeirosSintomas: "",
-    hospitalizado: "",
-  });
+ const [patientData, setPatientData] = useState<PatientData>({
+  age: "",
+  ageYears: "",
 
+  sex: "",
+  sexLabel: "",
+
+  pregnancyStatus: "",
+  pregnancyStatusLabel: "",
+
+  race: "",
+  raceLabel: "",
+
+  educationLevel: "",
+  educationLevelLabel: "",
+
+  occupationCode: "",
+  occupationName: "",
+
+  residenceState: "",
+  residenceStateLabel: "",
+  residenceMunicipality: "",
+  residenceHealthRegion: "",
+
+  diseaseCode: "",
+
+  notificationDate: "",
+  notificationYear: "",
+  notificationMonth: "",
+  notificationDay: "",
+  notificationEpiWeek: "",
+
+  notifMunicipality: "",
+  notifHealthRegion: "",
+  healthFacility: "",
+
+  symptomOnsetDate: "",
+  daysToNotification: "",
+  symptomEpiYear: "",
+  symptomEpiWeekNumber: "",
+
+  hospitalized: "",
+  hospitalState: "",
+  hospitalStateLabel: "",
+});
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [resultado, setResultado] = useState<ReturnType<typeof avaliarDengue> | null>(null);
 
@@ -84,9 +99,9 @@ function Triage() {
         />
 
         {grupos.map((grupo) => {
-          const itensDoGrupo = triageItems.filter(
-            (item) => item.group === grupo.id
-          );
+         const itensDoGrupo = triageItems.filter(
+  (item) => item.group === grupo.id
+);
 
           return (
             <section className="grupo-sintomas" key={grupo.id}>
