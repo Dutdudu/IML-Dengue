@@ -23,14 +23,34 @@ function Graphics() {
             }}
           >
             <img
-              src="../../analise_dados/imagens/casos_por_mes.png"
-              alt="Distribuição de sintomas por idade"
-              style={{
-                width: "100%",
-                maxWidth: 700,
-                borderRadius: 8,
-              }}
-            />
+  src={`${import.meta.env.BASE_URL}imagens/casos_por_mes.png`}
+  alt="Casos por mês"
+  style={{
+    width: "100%",
+    maxWidth: 700,
+    borderRadius: 8,
+  }}
+/>
+          </div>
+
+          <div
+            style={{
+              background: "#f3f3f3",
+              padding: 16,
+              borderRadius: 8,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+           <img
+  src={`${import.meta.env.BASE_URL}imagens/sintomas_confirmados_vs_descartados.png`}
+  alt="Sintomas em casos confirmados e descartados"
+  style={{
+    width: "100%",
+    maxWidth: 700,
+    borderRadius: 8,
+  }}
+/>
           </div>
 
           <div
@@ -43,34 +63,14 @@ function Graphics() {
             }}
           >
             <img
-              src="../../analise_dados/imagens/sintomas_confirmados_vs_descartados.png"
-              alt="Tendência temporal de casos suspeitos"
-              style={{
-                width: "100%",
-                maxWidth: 700,
-                borderRadius: 8,
-              }}
-            />
-          </div>
-
-          <div
-            style={{
-              background: "#f3f3f3",
-              padding: 16,
-              borderRadius: 8,
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              src="../../analise_dados/imagens/casos_confirmados_por_sexo.png"
-              alt="Correlação entre sintomas"
-              style={{
-                width: "100%",
-                maxWidth: 700,
-                borderRadius: 8,
-              }}
-            />
+  src={`${import.meta.env.BASE_URL}imagens/casos_confirmados_por_sexo.png`}
+  alt="Casos confirmados por sexo"
+  style={{
+    width: "100%",
+    maxWidth: 700,
+    borderRadius: 8,
+  }}
+/>
           </div>
         </div>
 
