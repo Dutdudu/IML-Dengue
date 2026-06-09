@@ -128,11 +128,11 @@ function Triage() {
 
        {resultado && (
   <Resultado
-    title={resultado.title}
-    message={resultado.message}
-    level={resultado.level}
-    models={resultado.models}
-  />
+  title={resultado.title}
+  message={resultado.message}
+  level={resultado.level}
+  models={resultado.models}
+/>
 )}
 
         <div style={{ marginTop: 20 }}>

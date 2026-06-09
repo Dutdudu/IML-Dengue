@@ -10,7 +10,7 @@ export type TriageItem = {
 type ModelResult = {
   name: string;
   result: string;
-  confidence: string;
+  probability: number;
   description: string;
 };
 
@@ -154,7 +154,7 @@ export function avaliarDengue(
         clinical: {
           name: "Avaliação clínica",
           result: "Compatibilidade alta",
-          confidence: "83%",
+          probability: 83,
           description:
             "A avaliação clínica considerou a presença de febre associada a sintomas como dor muscular, cefaleia, dor atrás dos olhos, náuseas, vômitos, exantema ou dor articular.",
         },
@@ -163,7 +163,7 @@ export function avaliarDengue(
           result: hasRiskContext
             ? "Risco contextual aumentado"
             : "Risco contextual moderado",
-          confidence: hasRiskContext ? "78%" : "68%",
+          probability: hasRiskContext ? 78 : 68,
           description:
             "A avaliação contextual considerou idade, sexo, gestação, município de residência, município de notificação, data dos sintomas, hospitalização e tempo até a notificação.",
         },
@@ -181,7 +181,7 @@ export function avaliarDengue(
         clinical: {
           name: "Avaliação clínica",
           result: "Compatibilidade parcial",
-          confidence: "69%",
+          probability: 69,
           description:
             "A combinação de sintomas é compatível com suspeita clínica, mas ainda não representa um conjunto amplo de manifestações.",
         },
@@ -190,7 +190,7 @@ export function avaliarDengue(
           result: hasRiskContext
             ? "Atenção ao perfil informado"
             : "Risco contextual intermediário",
-          confidence: hasRiskContext ? "72%" : "61%",
+          probability: hasRiskContext ? 72 : 61,
           description:
             "Foram considerados dados como idade, gestação, município, unidade notificadora, início dos sintomas e hospitalização.",
         },
@@ -208,14 +208,14 @@ export function avaliarDengue(
         clinical: {
           name: "Avaliação clínica",
           result: "Achados relevantes",
-          confidence: "64%",
+          probability: 64,
           description:
             "A avaliação identificou sinais ou sintomas que podem aparecer em quadros suspeitos de dengue, como prova do laço positiva, petéquias, febre ou dores no corpo.",
         },
         epidemiological: {
           name: "Avaliação epidemiológica",
           result: "Acompanhamento recomendado",
-          confidence: "67%",
+          probability: 67,
           description:
             "A análise considerou fatores como idade, gestação, residência, município de notificação, hospitalização e intervalo entre início dos sintomas e notificação.",
         },
@@ -232,14 +232,14 @@ export function avaliarDengue(
       clinical: {
         name: "Avaliação clínica",
         result: "Baixa compatibilidade",
-        confidence: "58%",
+        probability: 58,
         description:
           "Poucos sintomas típicos foram informados, reduzindo a compatibilidade clínica com um quadro suspeito de dengue.",
       },
       epidemiological: {
         name: "Avaliação epidemiológica",
         result: "Baixo risco contextual",
-        confidence: "55%",
+        probability: 55,
         description:
           "Os dados informados não indicaram, nesta simulação, fatores contextuais suficientes para elevar o nível de atenção.",
       },

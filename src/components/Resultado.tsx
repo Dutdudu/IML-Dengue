@@ -23,7 +23,7 @@ function Resultado({ title, message, level, models }: ResultadoProps) {
     <div className={`resultado resultado-${level.toLowerCase()}`}>
       <h2>{title}</h2>
 
-      <p>{}</p>
+      <p>{message}</p>
 
       <div className="probability-container">
         <div className="probability-card">
