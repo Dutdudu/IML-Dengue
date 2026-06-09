@@ -411,14 +411,14 @@ const grupoRisco = isCrianca || isIdoso || isGestante || hasComorbidity;
     "Você marcou sinais compatíveis com dengue grave. Procure atendimento médico imediatamente ou uma emergência.",
   models: {
     clinical: {
-      name: "Modelo Clínico",
+      name: "Modelo 1",
       result: "Risco muito alto",
       confidence: "94%",
       description:
         "Identificou sinais compatíveis com dengue grave, como alterações circulatórias, sangramentos importantes ou comprometimento de órgãos.",
     },
     epidemiological: {
-      name: "Modelo Epidemiológico",
+      name: "Modelo 2",
       result: "Prioridade máxima",
       confidence: "89%",
       description:
